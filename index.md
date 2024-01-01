@@ -26,7 +26,7 @@ The course will be held at the Department of Zoology and Wildlife Conservation, 
 
 ### Day 3 (26th January 2024, 9am-12pm)
 * [5. Basic statistics in R](./rmarkdown/5_data_viz.html){:target="_blank"}
-* [6. Bring your own data!](./rmarkdown/6_basic_stats.html){:target="_blank"}
+* 6. Bring your own data!
 
 ---
 ## Contact and feedback
@@ -37,5 +37,4 @@ The course will be held at the Department of Zoology and Wildlife Conservation, 
 * Christoph Liedtke – Biological Station of Doñana, Spain
 * Simon Loader – Natural History Museum, United Kingdom
 
-> For questions about the course material contact: christoph.liedtke@ebd.csic.es
-> For questions about the course organization contact: johnlyakurwa@gmail.com
+> For questions about the course material contact: christoph.liedtke@ebd.csic.es. For questions about the course organization contact: johnlyakurwa@gmail.com
