@@ -23,7 +23,7 @@ knitr::opts_chunk$set(echo = TRUE,
 
 R is first and foremost a programming language that was developed for statistics. As such, the possibilities for different types of data analysis are massive and continue to be developed. It would be impossible to impart a comprehensive tutorial on statistics in R in the limited time we have. The purpose of this section is therefore to introduce you to some common analyses and the typical syntax of running statistical models in R.
 
-## 1. Formulating Generalized Linear Models.
+## 1. Formulating Generalized Linear Models
 
 Perhaps the most frequently used types of statistical models in biology are generalized linear models (GLMs). As a reminder, special cases of this would be linear regression models, ANOVAs or a Student's T-tests. The typical syntax for such a model is:
 
@@ -144,16 +144,72 @@ but there's more:
 
 ## 4. Categorical predictors: T-test and ANOVA
 
-## 5. Data exploration
+A very common problem in biology is to test the difference between the response of two or more groups is statistically significant or not. For two groups, this would usually be achieved with a T-test, and for more than two groups, this could be achieved with an ANOVA. These are special cases of a GLM, and could be performed similarly to how we did above. However, because they are quite specific hypothesis tests, functions exist in R to execute them directly.
 
--   ggally pair plots
+#### T-Test
 
--   high variable dimensions: PCA
+The basic idea behind a T-Test is to use statistics to evaluate two contrary hypotheses:
 
-## 6. Test assumptions
+-   H0: NULL hypothesis: The average is the same as the sample used
+-   H1: True hypothesis: The average is different from the sample used
+
+The T-test is commonly used with small sample sizes and normality (something we will address later). The sample could be a fixed value (one sample t-test) or you could be comparing means of two groups (a two sample t-test). Lets try a two sample T-test.
+
+Lets test to see if Sepal Length is different between *I. versicolor* and *I. virginica*.
+
+```{r}
+# filter data to only two groups. We have to also remember to drop the factor levels!
+iris2<-iris %>%
+  filter(Species!="setosa") %>%
+  mutate(Species=fct_drop(Species))
+
+#
+t.test(iris2$Sepal.Length~iris2$Species)
+```
+
+To be specific, this is a two-tailed t-test. This is the default.
+
+![](img/tailed_tests.jpg)
+
+Looking at the function's documentation, could you figure our how to run a one-tailed test?
+
+#### ANOVA
+
+In an ANOVA, the hypotheses are essentially the same, but the independent variable has more than two factor levels.
+
+```{r}
+aov1<-aov(iris$Sepal.Length~iris$Species)
+aov1
+# to get the test statistics, we have to summarize this model first:
+summary(aov1)
+```
+
+You may also be interested in testing which groups exactly are different. This is achieved with a posthoc test.
+
+```{r}
+TukeyHSD(aov1)
+```
+
+An appropriate way to visualize these kinds of problems are with a boxplot.
+
+```{r}
+iris %>%
+  ggplot(aes(x=Species, y=Sepal.Length)) +
+  geom_boxplot()
+```
+
+## 5. Test assumptions
 
 -   normality
 
 -   heteroskedasticity
 
 -   phylogenetic signal
+
+## 6.  Data Exploration
+
+Although we are getting to this last, a good first step to any data analysis, is to explore your data first.
+
+-   ggally pair plots
+
+-   high variable dimensions: PCA

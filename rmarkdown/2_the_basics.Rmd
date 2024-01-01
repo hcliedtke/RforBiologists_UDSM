@@ -256,7 +256,7 @@ Other times errors arise because your syntax is incorrect. In such cases, RStudi
 
 # Where to get help?
 
-No one expects you to write all of your code from scratch. In fact, most of what you want to do, many people have already done. R-users are a vibrant, open community that are generally OK with sharing code. As such, if there is something that you want to do, but don't know how... google it! Besides the many dedicated webpages and online books on R, There are many platforms and forums like [stackoverflow](<https://stackoverflow.com/>) where people post code that didn't work for them, with others providing solutions.
+No one expects you to write all of your code from scratch. In fact, most of what you want to do, many people have already done. R-users are a vibrant, open community that are generally OK with sharing code. As such, if there is something that you want to do, but don't know how... google it! Besides the many dedicated webpages and online books on R, There are many platforms and forums like [stackoverflow](https://stackoverflow.com/) where people post code that didn't work for them, with others providing solutions.
 
 Another, very recent solution is to use ChatGPT! For common problems it is incredibly good at writing R code.
 
