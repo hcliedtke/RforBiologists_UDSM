@@ -1,0 +1,5 @@
+theme: jekyll-theme-minimal
+title: R for Biologists 
+description: A crash course in R. 
+logo: /assets/img/banner.jpg
+show_downloads: true

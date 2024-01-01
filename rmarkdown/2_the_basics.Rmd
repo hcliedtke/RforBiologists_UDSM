@@ -1,0 +1,263 @@
+---
+title: "The Basics"
+subtitle: | 
+  R for Biologists
+author:
+- name: "H. Christoph Liedtke"
+  affiliation: "Biological Station Doñana - CSIC"
+date: '2023-12-08'
+output: webexercises::webexercises_default
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      eval = TRUE,
+                      message=FALSE,
+                      error=FALSE)
+knitr::opts_knit$set(root.dir = '../')
+#library(webexercises)
+```
+
+# Installing R
+
+The R programming language is officially managed by the Comprehensive R Archive Network (CRAN) and can be downloaded for free [here](https://cran.r-project.org/).
+
+When opening the R "console", you should see the version that is installed and a "prompt" `>`. This tells you R is ready to receive your input. It now works like a big calculator!
+
+![](../rmarkdown/img/r_console.png)
+
+# Installing RStudio
+
+Everything that you do with R, ultimately happens in the console. However, it is not the most user friendly option to do everything directly in, and only with the console.
+
+Luckily, companion programs exist that amplify the R experience. These are often called *integrated development environments* (IDEs). The most popular, and the one we will use is [RStudio](https://posit.co/download/rstudio-desktop/). Like R, the desktop version of RStudio is free and cross platform. It can be downloaded [here](https://posit.co/download/rstudio-desktop/).
+
+RStudio has 4 windows:
+
+![](../rmarkdown/img/rstudio.jpg)
+
+[image source](https://melbournebioinformatics.github.io/r-intro-biologists/intro_r_biologists.html)
+
+# R syntax
+
+Like any other language, R has *syntax*. This is the arrangement of words, symbols and phrases to create meaning (e.g. a sentence). Here are some of the basics:
+
+## Spaces, indents and line breaks
+
+-   Code is run line-by-line and from left to right.
+-   Spaces (including indents) have no meaning!
+
+```{r}
+# this is the same:
+1+1
+# as this:
+  1     +  1
+```
+
+## Comments
+
+```{r}
+# This is a comment!
+
+1+1 # This is also a comment
+```
+
+## Case-sensitivity
+
+R is case-sensitive.
+
+```{r}
+# this will work:
+print("Hello")
+```
+
+```{r eval=FALSE}
+# This will not:
+Print("Hello")
+```
+
+## Storing information
+
+The true power comes from storing information. To store information we use the arrow `<-` operator
+
+```{r}
+a<-1
+b<-2
+
+a+b
+```
+
+## Operators
+
+We have already seen a few operators, such as `+` or `<-`. Most are pretty self-explanatory, but I will highlight a few more:
+
+```{r}
+# multiplication
+2*3
+# division
+2/3
+# exponents 
+2^3
+```
+
+Equally important are logical operators. These are ones that will result in a `TRUE` or `FALSE`. For example:
+
+```{r}
+# smaller than
+2<3
+# bigger or equal to
+2>=3
+# same as/eual to
+3==3
+# not equal to
+3!=2
+```
+
+# The basic building blocks
+
+As we have already mentioned, R is an object-oriented language! That means, information is mostly stored as "objects". To master R, we therefore have to get familiar with the different types of objects. Here a few of the most important:
+
+## Vectors
+
+The most basic object type is a *vector*. This is a one-dimensional storage (think of it as a single line of text, or a single column in excel). We have already seen this when we stored a number as an alphabet:
+
+```{r}
+a<-1
+a
+```
+
+However, we can make this more than just a single number!
+
+```{r}
+a<-1:100
+```
+
+> Tip: Rstudio will often tell you what kind of structure the data in the object has! In this case a series of 100 integers!
+
+Vectors are not limited to numbers, then can also be characters, or "strings" as they are often called.
+
+```{r}
+b<-"Hello, World!"
+```
+
+> IMPORTANT: notice how characters are wrapped in quotations (single or double), while as numerics are not.
+
+If we want to store a series of data, we need to use the `c()` syntax.
+
+```{r}
+# for numerics, this:
+d<-1:4
+# is the same as this:
+e<-c(1,2,3,4)
+# but for characters, we need to use c()
+f<-c("Hello, World!", "Hello, Tanzania!", "Hello, Zanzibar!", "Hello, UDSM!")
+```
+
+Two other important types of vectors that are worth mentioning are *logical* vectors and *factors*
+
+```{r}
+# this is logical vector
+g<-c(TRUE, FALSE)
+
+# this is a factor (categorical variables)
+h<-as.factor(c("a","b"))
+```
+
+## Matrix and Dataframe
+
+Rarely will our data be one-dimensional. Most of the time, we will be working with tables, that is, 2D objects with rows and columns. We could combine two 1D objects into a data frame:
+
+```{r}
+df<-data.frame(e, f)
+df
+```
+
+> Note: notice how we can combine different types of data (strings and numbers).
+
+## Functions
+
+We will come back to dataframes in more detail later, but now is a good time to introduce some more syntax, and *functions*. It is very likely that we are going to do things over and over again. Like adding together numbers.
+
+```{r}
+4+6
+7+8
+10+50
+```
+
+To make this more practical, we can come up with a flexible way to do this for any two numbers:
+
+```{r}
+product<-function(a,b) a+b
+```
+
+There is a lot to unpack here. We have introduced the `function()` syntax, the `arguments` of a function and the `description`.
+
+> Note: you have already seen functions, with *data.frame()* and *as.factor()*
+
+we have now stored the function as and object called `product` and can now easily use it!
+
+```{r}
+product(a=2, b=9)
+```
+
+Obviously this is a fairly useless function because `+` does the same thing. In fact, R comes loaded with many useful functions, incuding `sum()`. This does exactly the same:
+
+```{r}
+sum(c(2,9))
+```
+
+> Tip: To know what arguments are available for a specific function, use the "Help" window on the bottom right.
+
+Some other useful functions include:
+
+```{r}
+mean(c(2,9,9))
+median(c(2,9,9))
+length(c(2,9,9))
+```
+
+# Libraries and documentation
+
+Sets of related functions are often stored together in a "package" or "library". Some of these come shipped with R, such as the `stats` package. One of the most powerful things about R is that *anyone* can write a package or library and make it available to the whole community. This is why R is always evolving and is quickly becoming the leading software for statistics, data visualization, [phylogenetics](http://www.phytools.org/), [GIS and spatial data](https://rspatial.org/), and even [web applications](https://shiny.posit.co/r/gallery/interactive-visualizations/movie-explorer/).
+
+To make use of these libraries, we need to first install them (done only once) and then load them (needs to be done for every new session). Lets spend some time looking at the following:
+
+-   The *packages* window
+-   Package repositories like [CRAN](https://cran.r-project.org/)
+-   Package manuals and vignettes.
+-   Function help pages
+
+```{r eval=FALSE}
+# installing a package
+install.packages("readxl")
+
+# loading a package
+library(readxl)
+```
+
+# Common mistakes
+
+Sometimes code just won't work. This could be because there is something inherently wring with your data and/or a function you are trying to use. In this case, sometimes the error messages can be helpful, other times not so much. This often depends on how well documented a function is, and how well the author can anticipate ways in which the function may break. For example, we cannot calculate the mean of a vector that contains non-numerics:
+
+```{r}
+mean(c(1,2,3))
+mean(c(1, 2, "hello"))
+```
+
+Other times errors arise because your syntax is incorrect. In such cases, RStudio has become incredibly sophisitcated and tries to help you, even before you run your code, with red underlines under the offending section of code, or a red cross at the start of the line. Lets look at some very common problems:
+
+-   Case sensitivity. In R, as in other programming languages, case sensitivity is important.
+-   Missing commas
+-   Mismatched parentheses or brackets
+-   Not quoting file paths
+-   Not finishing a command so seeing “+” in the console. If you need to, you can press ESC to cancel the command.
+
+# Where to get help?
+
+No one expects you to write all of your code from scratch. In fact, most of what you want to do, many people have already done. R-users are a vibrant, open community that are generally OK with sharing code. As such, if there is something that you want to do, but don't know how... google it! Besides the many dedicated webpages and online books on R, There are many platforms and forums like [stackoverflow](<https://stackoverflow.com/>) where people post code that didn't work for them, with others providing solutions.
+
+Another, very recent solution is to use ChatGPT! For common problems it is incredibly good at writing R code.
+
+Although it is therefore generally advised to "copy code", for your own development, it is important to take some time to understand the code you are using.
