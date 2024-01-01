@@ -17,16 +17,16 @@ Prior to the course, you should download and install both R and RStudio desktop 
 The course will be held at the Department of Zoology and Wildlife Conservation, University of Dar es Salaam. Precise location to be announced. 
 
 ### Day 1 (24th January 2024, 9am-12pm)
-* [1. Introduction to the R programming language](./rmarkdown/1_intro_to_r.html){:target="_blank"}
-* [2. Scripting with R markdown](./rmarkdown/2_the_basics.html){:target="_blank"}
+1. [Introduction to the R programming language](./rmarkdown/1_intro_to_r.html){:target="_blank"}
+2. [Scripting with R markdown](./rmarkdown/2_the_basics.html){:target="_blank"}
 
 ### Day 2 (25th January 2024, 9am-12pm)
-* [3. Data-wrangling with the tidyverse](./rmarkdown/3_rmarkdown.html){:target="_blank"}
-* [4. Data visualization with ggplot2](./rmarkdown/4_data_wrangling.html){:target="_blank"}
+3. [Data-wrangling with the tidyverse](./rmarkdown/3_rmarkdown.html){:target="_blank"}
+4. [Data visualization with ggplot2](./rmarkdown/4_data_wrangling.html){:target="_blank"}
 
 ### Day 3 (26th January 2024, 9am-12pm)
-* [5. Basic statistics in R](./rmarkdown/5_data_viz.html){:target="_blank"}
-* 6. Bring your own data!
+5. [Basic statistics in R](./rmarkdown/5_data_viz.html){:target="_blank"}
+6. Bring your own data!
 
 ---
 ## Contact and feedback
