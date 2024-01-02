@@ -144,7 +144,13 @@ but there's more:
 
 ## 4. Categorical predictors: T-test and ANOVA
 
-A very common problem in biology is to test the difference between the response of two or more groups is statistically significant or not. For two groups, this would usually be achieved with a T-test, and for more than two groups, this could be achieved with an ANOVA. These are special cases of a GLM, and could be performed similarly to how we did above. However, because they are quite specific hypothesis tests, functions exist in R to execute them directly.
+A very common problem in biology is to test the difference between the response of two or more groups is statistically significant or not. Essentially we are comparing within group and between group variances.
+
+![](img/anova.png)
+
+[image source](<https://www.datanovia.com/en/lessons/anova-in-r/#check-assumptions>)
+
+For two groups, this would usually be achieved with a T-test, and for more than two groups, this could be achieved with an ANOVA. These are special cases of a GLM, and could be performed similarly to how we did above. However, because they are quite specific hypothesis tests, functions exist in R to execute them directly.
 
 #### T-Test
 
@@ -198,15 +204,73 @@ iris %>%
   geom_boxplot()
 ```
 
-## 5. Test assumptions
+## 5. Check assumptions
 
--   normality
+It is important to understand that as long as the syntax is correct and the data is formatted correctly, R will run any statistical test you ask it to. It is therefore up to you to understand the assumptions of the method you are applying. These will differ between tests, but for linear-regression type problems, like the ANOVA, there are generally three assumptions we should be aware of:
 
--   heteroskedasticity
+#### Normality
 
--   phylogenetic signal
+The data for each factor should be normally distributed. We could check this visually with a histogram or a density plot.
 
-## 6.  Data Exploration
+```{r}
+# histogram
+iris %>%
+  ggplot(aes(x=Sepal.Length)) +
+  geom_histogram(bins = 20) # refin the number of bins
+
+# how do we show this per factor level? or as densities?
+
+```
+
+Are we convinced that the data is normal? This is a fairly subjective approach and may not be very accurate if sample sizes are small. It may be more appropriate to look at the model residuals instead. If The data is normally distributed, then the residuals (the distance between the points and the regression line) should be correlated with the theoretical data of the model if it were 100% normal. This can be visually inspected with a **Q-Q test**.
+
+```{r}
+library(car)
+qqPlot(aov1$residuals,
+  id = FALSE 
+)
+
+```
+
+If the data is normally distributed then the points should fall close to the line. In this case, we can be fairly happy with the distribution. To confirm this, we can run a hypothesis test, like a Shapiro-Wilk test. Here, like previous null hypotheses we have seen, we are testing whether the sample is significantly different from the test statistic. i.e. if the data is normally distributed, we expect *no statistical difference*.
+
+```{r}
+shapiro.test(residuals(aov1))
+```
+
+#### Homogeneity of variance
+
+A second assumption of an ANOVA is that the variances are the same across groups. We can test this again by looking at the residuals.
+
+```{r}
+plot(aov1, which=3)
+```
+
+We should see no relationship. In other words, the points should be scattered randomly along the y-axis. The red line should be horizontal. We can see that there is some deviation. As for normality, we can apply a formal test for this. Here, the **Levene's Test**.
+
+```{r}
+leveneTest(Sepal.Length ~ Species, data = iris)
+```
+
+In this case, *it is* significant, meaning that our data *does not* conform to the homogeneity of variance assumption.
+
+This means we should probably not rely on an ANOVA. We could try a different test that has more relaxed assumptions. e.g. a Welch one-way test
+
+```{r}
+oneway.test(Sepal.Length ~ Species, data = iris)
+```
+
+#### Indpendence of observations
+
+Each data point is assumed to be completely independent from each other. This assumption may be violated if we take repeated measures on the same individuals, or we take climate measurements from locations that are geographically close to each other (spatial autocorrelation), or we are comparing species, which are inherently, evolutionary related. We will not address these issues here in any more detail, but this should be kept in mind. Specific solutions exist for non-independent data (e.g. phylogenetic linear models).
+
+#### What to do when assumptions are not met?
+
+-   Transform data
+
+-   Choose a different test (e.g. non-parametric)
+
+## 6. Data Exploration
 
 Although we are getting to this last, a good first step to any data analysis, is to explore your data first.
 

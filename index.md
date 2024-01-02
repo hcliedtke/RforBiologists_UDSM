@@ -11,6 +11,8 @@ Participants are required to bring their own laptop with at least 4Gb of RAM and
 
 Prior to the course, you should download and install both R and RStudio desktop on your system. Do so, by following [these instructions](https://posit.co/download/rstudio-desktop/).
 
+On the final day, we will have time to work with your own data. __please bring a dataset that you are currently working on__. It can be any type of data that is organized in some sort of table.
+
 ---
 ## Course Outline
 
