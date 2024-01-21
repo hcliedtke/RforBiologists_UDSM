@@ -11,12 +11,12 @@ Participants are required to bring their own laptop with at least 4Gb of RAM and
 
 Prior to the course, you should download and install both R and RStudio desktop on your system. Do so, by following [these instructions](https://posit.co/download/rstudio-desktop/).
 
-On the final day, we will have time to work with your own data. __please bring a dataset that you are currently working on__. It can be any type of data that is organized in some sort of table.
+On the final day, we will have time to work with your own data. __please bring a dataset that you are currently working on__. It can be any type of biological data that is organized in some sort of table.
 
 ---
 ## Course Outline
 
-The course will be held at the Department of Zoology and Wildlife Conservation, University of Dar es Salaam. Precise location to be announced. 
+The course will be held at the Science Complex Building, University of Dar es Salaam, Seminar Room SC 415. Precise location to be announced. 
 
 ### Day 1 (24th January 2024, 9am-12pm)
 1. [Introduction to the R programming language](./rmarkdown/1_intro_to_r.html){:target="_blank"}
@@ -36,7 +36,7 @@ The course will be held at the Department of Zoology and Wildlife Conservation, 
 
 ###  Course organizers
   
-* John Lyakurwa – UDSM
+* John Lyakurwa – UDSM, Tanzania
 * Christoph Liedtke – Biological Station of Doñana, Spain
 * Simon Loader – Natural History Museum, United Kingdom
 
