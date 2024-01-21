@@ -35,7 +35,7 @@ The core packages are:
 
 Today we will run through a small project that will help us get familiar with the tidyverse. To do so, we will use some of the available datasets from [datacarpentry](https://datacarpentry.org/semester-biology/materials/datasets/).
 
-### 1. starting a new project R
+### 1. Starting a new project R
 
 Lets get started by creating a new notebook! Let's call it **Mammal Body sizes**.
 

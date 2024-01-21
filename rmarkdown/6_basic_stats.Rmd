@@ -16,7 +16,6 @@ knitr::opts_chunk$set(echo = TRUE,
                       eval = TRUE,
                       message=FALSE,
                       error=FALSE)
-#knitr::opts_knit$set(root.dir = '../')
 ```
 
 # Statistics using R
@@ -148,7 +147,7 @@ A very common problem in biology is to test the difference between the response 
 
 ![](img/anova.png)
 
-[image source](<https://www.datanovia.com/en/lessons/anova-in-r/#check-assumptions>)
+[image source](https://www.datanovia.com/en/lessons/anova-in-r/#check-assumptions)
 
 For two groups, this would usually be achieved with a T-test, and for more than two groups, this could be achieved with an ANOVA. These are special cases of a GLM, and could be performed similarly to how we did above. However, because they are quite specific hypothesis tests, functions exist in R to execute them directly.
 
@@ -260,20 +259,134 @@ This means we should probably not rely on an ANOVA. We could try a different tes
 oneway.test(Sepal.Length ~ Species, data = iris)
 ```
 
-#### Indpendence of observations
+#### Independence of observations
 
 Each data point is assumed to be completely independent from each other. This assumption may be violated if we take repeated measures on the same individuals, or we take climate measurements from locations that are geographically close to each other (spatial autocorrelation), or we are comparing species, which are inherently, evolutionary related. We will not address these issues here in any more detail, but this should be kept in mind. Specific solutions exist for non-independent data (e.g. phylogenetic linear models).
 
 #### What to do when assumptions are not met?
 
--   Transform data
+-   Transform data (e.g. log transform)
 
--   Choose a different test (e.g. non-parametric)
+-   Choose a different test (e.g. non-parametric, Kruskal-Wallis)
 
 ## 6. Data Exploration
 
-Although we are getting to this last, a good first step to any data analysis, is to explore your data first.
+Although we are getting to this last, a good first step to any data analysis, is to explore your data first. This is especially true for datasets with many variables. This will help you find patterns, but also screen for problematic data (e.g. outliers, non-normal distributions, inter-correlations).
 
--   ggally pair plots
+#### Pair-plots
 
--   high variable dimensions: PCA
+A useful tool for this are *pair-plots*. I.e. plotting each variable against each other. We can do this with the library `GGally`.
+
+```{r}
+library(GGally)
+
+iris %>%
+  ggpairs()
+```
+
+These plots are really useful and can be customized quite extensively, for example, instead of getting correlation coefficients for the entire data set, we can get them per species.
+
+```{r}
+iris %>%
+  ggpairs(aes(color=Species)) + # note that ggplot layers can be added just like before. E.g. a theme!
+  theme_bw()
+```
+
+#### Principal Component Analysis
+
+Very often in biological data, we are working with many, inter correlated variables.
+
+Why are these problematic?
+
+A PCA is a good way to visualize "high-dimensional" data and can also be a useful pre-processing step for further statistical analyses. Lets try this with a morphological dataset on birds.
+
+```{r}
+birds<-read_csv("../data/bird_sizes.csv")
+
+birds
+```
+
+As you can see, this dataset have mean measurements of birds, but also a lot of missing data. In general, PCAs do not accept `NA` data. So lets select only the morphological measurements of female birds, and filter out any row that has `NA`.
+
+```{r}
+birds_clean<-birds %>%
+  select(Order, Family, Species, F_mass, F_wing, F_tarsus,F_bill, F_tail) %>%
+  drop_na()
+
+birds_clean
+```
+
+We are now left with 1401 entries and 6 variables. Lets explore these:
+
+```{r}
+birds_clean %>%
+  select(-c(Order, Family, Species)) %>% # remove the species variable we don't want to plot (how would you use select_if() instead?)
+  ggpairs()
+```
+
+You can see that these are all quite strongly intercorrelated (i.e. bigger birds also have bigger wings etc.), and they seem to follow a log distribution. These would both be problematic for linear models. So lets log-transform this data and run a PCA. Let's also reduce the dataset to fewer Orders, to make this exercise a bit easier. Lets keep only Owls, Shorebirds, Woodpeckers and Parrots.
+
+```{r}
+birds_clean_log<- birds_clean %>%
+  mutate_if(is.numeric, log10)  %>% # use a clever version of mutate to alter multiple columns of the same type, and log10 transform them
+  filter(Order %in% c("Strigiformes","Columbiformes","Charadriiformes","Piciformes","Psittaciformes")) 
+```
+
+Let's quickly plot that again.
+
+```{r}
+birds_clean_log %>%
+  select_if(is.numeric) %>% # using select_if() here
+  ggpairs()
+```
+
+Looks much better already!
+
+Lets run a PCA
+
+```{r}
+birds_pca<-prcomp(birds_clean_log %>%
+                    select_if(is.numeric),
+                  scale. = T, center = T)
+```
+
+Lets explore the loadings:
+
+```{r}
+birds_pca
+```
+
+And the components
+
+```{r}
+summary(birds_pca)
+```
+
+And lets visualize this. We could plot the first two components using our knowledge of ggplot
+
+```{r}
+str(birds_pca) # see where the components are stored
+
+birds_pca$x %>%
+  as_data_frame() %>% # required, because the tidyverse doesn't like matrices
+  ggplot(aes(x=PC1, y=PC2)) +
+  geom_point()
+```
+
+On its own, we can clean little information from this. PCAs become especially useful when we can assign groups to data. Lets leverage a new library to make this a little easier.
+
+```{r}
+library(ggfortify)
+
+autoplot(birds_pca,
+         loadings = TRUE,loadings.label = TRUE, # includes loading arrows
+         data = birds_clean_log, colour = 'Order', frame=T) # colours points by a grouping column in our original data and add convex hulls  
+```
+
+What can we glean from this? Is this clearer when we plot other components?
+
+```{r}
+autoplot(birds_pca, x=2,y=3,
+         loadings = TRUE,loadings.label = TRUE,
+         data = birds_clean_log, colour = 'Order', frame=T) 
+```

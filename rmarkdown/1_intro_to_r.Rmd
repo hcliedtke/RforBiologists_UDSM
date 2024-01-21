@@ -37,6 +37,9 @@ R is programming language geared towards (but not exclusively for) statistics. H
 * It is always evolving
 * It is a one-stop-shop: libraries for many different types of analyses
 * It is widely used, even outside academia and one of the most popular languages for data science
+* __it allows reproducibility__: This is extremely important in science.
+
+  
 
 ![](https://d14b9ctw0m6fid.cloudfront.net/ugblog/wp-content/uploads/2019/09/r-programming-language-blog-post.png)
 [source](https://www.upgrad.com/blog/why-learn-r-top-reasons-to-learn/)
